@@ -1,0 +1,10 @@
+typer[all]
+requests
+packaging
+pipdeptree
+pyvis
+weasyprint
+bandit
+chardet
+pip-licenses
+jinja2

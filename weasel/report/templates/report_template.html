@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Rapport Weasel</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2rem; }
+    h1, h2, h3 { color: #2c3e50; }
+    table { width: 100%; border-collapse: collapse; margin-bottom: 2rem; }
+    th, td { border: 1px solid #ccc; padding: 0.5rem; text-align: left; }
+    th { background-color: #f2f2f2; }
+    .critical { background-color: #ffcccc; }
+    .high { background-color: #ffd9b3; }
+    .medium { background-color: #fff2b3; }
+    .low { background-color: #d9f2d9; }
+    .permissive { color: green; }
+    .restrictive { color: red; }
+    .unknown { color: gray; }
+    input[type="search"] { margin: 0.5rem 0; padding: 0.3rem; width: 30%; }
+  </style>
+  <script>
+    function searchInTable(id, inputId) {
+      const input = document.getElementById(inputId);
+      const filter = input.value.toLowerCase();
+      const rows = document.querySelectorAll(`#${id} tbody tr`);
+      rows.forEach(row => {
+        const text = row.textContent.toLowerCase();
+        row.style.display = text.includes(filter) ? '' : 'none';
+      });
+    }
+  </script>
+</head>
+<body>
+  <h1>🛡️ Rapport de Sécurité Weasel</h1>
+  <p><strong>Date :</strong> {{ report.date }}</p>
+
+  <h2>📦 Dépendances Installées</h2>
+  <input type="search" id="depSearch" onkeyup="searchInTable('depTable', 'depSearch')" placeholder="Rechercher...">
+  <table id="depTable">
+    <thead><tr><th>Nom</th><th>Version</th></tr></thead>
+    <tbody>
+      {% for pkg in report.dependencies %}
+      <tr><td>{{ pkg.name }}</td><td>{{ pkg.version }}</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <h2>🚨 Vulnérabilités détectées</h2>
+  <input type="search" id="vulnSearch" onkeyup="searchInTable('vulnTable', 'vulnSearch')" placeholder="Rechercher...">
+  <table id="vulnTable">
+    <thead><tr><th>Package</th><th>ID</th><th>Gravité</th><th>Score</th><th>Description</th></tr></thead>
+    <tbody>
+      {% for name, vulns in report.vulnerabilities.items() %}
+        {% for v in vulns %}
+        <tr class="{{ v.severity }}">
+          <td>{{ name }}</td>
+          <td>{{ v.id }}</td>
+          <td>{{ v.severity }}</td>
+          <td>{{ v.cvss_score }}</td>
+          <td>{{ v.summary }}</td>
+        </tr>
+        {% endfor %}
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <h2>📜 Licences</h2>
+  <input type="search" id="licSearch" onkeyup="searchInTable('licTable', 'licSearch')" placeholder="Rechercher...">
+  <table id="licTable">
+    <thead><tr><th>Package</th><th>Licence</th><th>Type</th></tr></thead>
+    <tbody>
+      {% for lic in report.licenses %}
+      <tr>
+        <td>{{ lic.name }}</td>
+        <td>{{ lic.license }}</td>
+        <td class="{{ lic.permissivity }}">{{ lic.permissivity }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <h2>🧪 Résultats de l'analyse de Code</h2>
+  <input type="search" id="banditSearch" onkeyup="searchInTable('banditTable', 'banditSearch')" placeholder="Rechercher...">
+  <table id="banditTable">
+    <thead><tr><th>Fichier</th><th>Ligne</th><th>Test</th><th>Description</th></tr></thead>
+    <tbody>
+      {% for issue in report.bandit %}
+      <tr>
+        <td>{{ issue.filename }}</td>
+        <td>{{ issue.line_number }}</td>
+        <td>{{ issue.test_id }}</td>
+        <td>{{ issue.issue_text }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</body>
+</html>
