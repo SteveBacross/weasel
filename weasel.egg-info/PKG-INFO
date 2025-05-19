@@ -10,7 +10,10 @@ Classifier: License :: OSI Approved :: MIT License
 Classifier: Operating System :: OS Independent
 Requires-Python: >=3.8
 Description-Content-Type: text/plain
-Requires-Dist: typer[all]
+Requires-Dist: typer>=0.7.0
+Requires-Dist: rich>=10.11.0
+Requires-Dist: shellingham>=1.3.0
+Requires-Dist: click>=8.0.0
 Requires-Dist: requests
 Requires-Dist: packaging
 Requires-Dist: pipdeptree

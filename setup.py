@@ -6,7 +6,10 @@ setup(
     packages=find_packages(),
     include_package_data=True,
     install_requires=[
-        "typer[all]",
+        "typer>=0.7.0",
+        "rich>=10.11.0",
+        "shellingham>=1.3.0",
+        "click>=8.0.0",
         "requests",
         "packaging",
         "pipdeptree",

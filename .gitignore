@@ -1,0 +1,55 @@
+# Environnement virtuel
+.venv/
+env/
+venv/
+
+# Fichiers temporaires Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Caches
+*.log
+*.tmp
+*.bak
+*.swp
+*.DS_Store
+
+# Dossiers de build
+build/
+dist/
+lib/
+*.egg-info/
+
+# Cache de tests
+.pytest_cache/
+
+# Dossiers générés automatiquement
+weasel_report/
+htmlcov/
+coverage.xml
+*.cover
+
+# Fichiers système
+Thumbs.db
+ehthumbs.db
+.DS_Store
+Icon?
+Desktop.ini
+
+# VS Code config
+.vscode/
+
+# Fichier de configuration personnel (si besoin)
+config.yaml
+
+# Ignorer les notebooks temporaires ou sauvegardes
+*.ipynb_checkpoints
+
+# Fichiers compilés ou artefacts C
+*.so
+*.dll
+*.dylib
+*.o
+*.a
+*.out

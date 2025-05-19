@@ -1,3 +1,5 @@
+import os
+from pathlib import Path
 import subprocess
 import json
 from typing import List, Dict
@@ -6,7 +8,7 @@ import logging
 
 def run_bandit_scan(target_path: str, severity_level: str = "low", ignored_tests: List[str] = [], exclude_dirs: List[str] = []) -> List[Dict[str, str]]:
     """
-    Exécute Bandit sur le code source du projet.
+    Execute l' analyseur de code statique
     :param target_path: Chemin vers le dossier à analyser
     :param severity_level: Niveau de sévérité minimum (low, medium, high)
     :param ignored_tests: Liste des tests à ignorer (ex: ['B101'])
@@ -23,12 +25,14 @@ def run_bandit_scan(target_path: str, severity_level: str = "low", ignored_tests
         cmd.extend(["--skip", ",".join(ignored_tests)])
         
     if exclude_dirs:
-        cmd.extend(["--exclude", ",".join(exclude_dirs)])
+        rel_paths = [os.path.relpath(os.path.join(target_path, d)).replace("\\", "/") for d in exclude_dirs]
+        cmd.extend(["--exclude", ",".join(rel_paths)])
 
     with tempfile.NamedTemporaryFile(suffix=".json", delete=False) as tmpfile:
         cmd.extend(["-o", tmpfile.name])
 
         try:
+            print("📤 Commande Bandit exécutée :", " ".join(cmd))
             result = subprocess.run(cmd, check=False)
             if result.returncode > 1:
                 logging.error(f"[Bandit] Erreur d'exécution : {result}")

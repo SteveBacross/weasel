@@ -74,3 +74,8 @@ weasel @ file:///C:/Users/Steeve/Documents/weasel
 weasyprint==65.0
 webencodings==0.5.1
 zopfli==0.2.3.post1
+simplejson==3.16.0
+itsdangerous==1.1.0
+mako==1.1.0
+defusedxml==0.6.0
+Werkzeug==0.16.0

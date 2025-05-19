@@ -41,7 +41,10 @@ weasel scan -r requirements.txt [OPTIONS]
 
 ### Exemple complet :
 ```bash
-weasel scan -r requirements.txt --cve --licenses --code-check --graph --report-format html
+weasel run -r requirements.txt --cve --licenses --code-check --graph --report-format html --config config.yaml
+
+
+
 ```
 
 ---

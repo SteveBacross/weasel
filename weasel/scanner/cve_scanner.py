@@ -61,6 +61,83 @@ def format_cve(cve: Dict) -> Dict:
         "references": [ref["url"] for ref in cve.get("references", []) if isinstance(ref, dict) and "url" in ref],
         "source": "OSV"
     }
+  
+  
+"""def format_cve(vuln: dict) -> dict:
+    id = vuln.get("id", "unknown")
+
+    # Récupération des champs de description
+    description = "None"
+    if "details" in vuln and vuln["details"]:
+        description = vuln["details"]
+    elif "summary" in vuln:
+        description = vuln["summary"]
+
+    # Score / Gravité depuis différentes sources possibles
+    score = "None"
+    severity = "unknown"
+
+    # OSV schema
+    if "cvss" in vuln:
+        cvss = vuln["cvss"]
+        score = cvss.get("score", "None")
+        severity = cvss.get("severity", "unknown")
+
+    # Support pour GHSA ou CVEs enrichis
+    if "severity" in vuln and isinstance(vuln["severity"], list):
+        # GHSA
+        severity = vuln["severity"][0].get("type", "unknown")
+
+    # Cas OSV enrichi type Google (nouveau schéma)
+    if "database_specific" in vuln:
+        db_info = vuln["database_specific"]
+        if "cvss" in db_info:
+            score = db_info["cvss"].get("score", score)
+            severity = db_info["cvss"].get("severity", severity)
+
+    return {
+        "id": id,
+        "score": score,
+        "severity": severity,
+        "description": description
+    }"""
+
+"""def format_cve(vuln: dict) -> dict:
+    id = vuln.get("id", "unknown")
+
+    # Priorité à "details", fallback sur "summary"
+    description = (
+        vuln.get("details")
+        or vuln.get("summary")
+        or vuln.get("description")
+        or "No description provided."
+    )
+
+    score = "None"
+    severity = "unknown"
+
+    # OSV CVSS
+    if "cvss" in vuln:
+        score = vuln["cvss"].get("score", score)
+        severity = vuln["cvss"].get("severity", severity)
+
+    # GHSA format
+    if "severity" in vuln and isinstance(vuln["severity"], list):
+        severity = vuln["severity"][0].get("type", severity)
+
+    # database_specific override
+    if "database_specific" in vuln and "cvss" in vuln["database_specific"]:
+        cvss_data = vuln["database_specific"]["cvss"]
+        score = cvss_data.get("score", score)
+        severity = cvss_data.get("severity", severity)
+
+    return {
+        "id": id,
+        "score": score,
+        "severity": severity,
+        "description": description
+    }"""
+
 
 def _extract_cvss(cve: Dict) -> Optional[float]:
     scores = cve.get("severity", [])

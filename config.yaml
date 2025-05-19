@@ -1,0 +1,11 @@
+bandit:
+  excluded_dirs:
+    - .venv
+    - tests
+    - build
+    - weasel_report
+    - lib
+    - dist
+    - utils
+    - weasel.egg-info
+    - pytest_cache
