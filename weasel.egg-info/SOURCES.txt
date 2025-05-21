@@ -29,6 +29,7 @@ weasel/commands/about.py
 weasel/commands/run.py
 weasel/graph/__init__.py
 weasel/graph/dependency_graph.py
+weasel/graph/generate_dependency_graph_dash.py
 weasel/graph/templates.py
 weasel/parser/__init__.py
 weasel/parser/requirements.py

@@ -35,15 +35,17 @@
   <p><strong>Date :</strong> {{ report.date }}</p>
 
   <h2>📦 Dépendances Installées</h2>
-  <input type="search" id="depSearch" onkeyup="searchInTable('depTable', 'depSearch')" placeholder="Rechercher...">
-  <table id="depTable">
-    <thead><tr><th>Nom</th><th>Version</th></tr></thead>
-    <tbody>
-      {% for pkg in report.dependencies %}
-      <tr><td>{{ pkg.name }}</td><td>{{ pkg.version }}</td></tr>
-      {% endfor %}
-    </tbody>
-  </table>
+  <details>
+    <input type="search" id="depSearch" onkeyup="searchInTable('depTable', 'depSearch')" placeholder="Rechercher...">
+    <table id="depTable">
+      <thead><tr><th>Nom</th><th>Version</th></tr></thead>
+      <tbody>
+        {% for pkg in report.dependencies %}
+        <tr><td>{{ pkg.name }}</td><td>{{ pkg.version }}</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+</details>
 
   <h2>🚨 Vulnérabilités détectées</h2>
   <input type="search" id="vulnSearch" onkeyup="searchInTable('vulnTable', 'vulnSearch')" placeholder="Rechercher...">

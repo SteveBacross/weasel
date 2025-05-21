@@ -14,10 +14,9 @@ Il identifie :
 ## 🚀 Installation
 
 ```bash
-# Clone du repo (si nécessaire)
-git clone https://github.com/ton-org/weasel.git
+git clone https://github.com/SteveBacross/weasel.git
 cd weasel
-
+Aller sur la branche master
 # Installation du package
 pip install .
 ```
@@ -41,13 +40,7 @@ weasel scan -r requirements.txt [OPTIONS]
 
 ### Exemple complet :
 ```bash
-weasel run -r requirements.txt --cve --licenses --code-check --graph --report-format html --config config.yaml
-
-
-
-```
-
----
+weasel run -r requirements.txt --cve --licenses --code-check --graph --report-format html
 
 ## 📦 Dépendances principales
 - `typer` (CLI)
@@ -74,7 +67,7 @@ pytest tests/
 
 ## 🛠️ À venir
 - Mode CI/CD
-- Intégration dans GitHub Actions
+- Intégration dans GitHub Actions avec fichier de configuration
 - Analyse multi-fichiers `requirements.txt`
 
 ---

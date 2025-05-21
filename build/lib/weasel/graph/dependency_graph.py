@@ -80,7 +80,7 @@ def generate_dependency_graph(packages: List[Dict], vulnerable_packages: List[st
             "version": version,
             "vuln": is_vuln,
             "deps": deps,
-            "dependents": []  # à remplir plus tard
+            "dependents": []  
         }
 
         for dep in deps:

@@ -7,11 +7,16 @@ from weasyprint import HTML
 
 
 def build_report_data(dependencies, vulnerabilities, licenses, bandit_issues):
+    sorted_licenses = sorted(licenses, key=lambda lic: (
+        0 if lic["permissivity"] == "restrictive" else
+        1 if lic["permissivity"] == "unknown" else
+        2
+    ))
     return {
         "date": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
         "dependencies": dependencies,
         "vulnerabilities": vulnerabilities,
-        "licenses": licenses,
+        "licenses": sorted_licenses,
         "bandit": bandit_issues,
     }
 
@@ -19,7 +24,7 @@ def generate_reports(report_data: dict, output_dir: Path, formats: list):
     output_dir.mkdir(parents=True, exist_ok=True)
     env = Environment(loader=FileSystemLoader("weasel/report/templates"))
     template = env.get_template("report_template.html")
-
+        
     html_content = template.render(report=report_data)
 
     if "html" in formats:

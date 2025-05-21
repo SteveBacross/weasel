@@ -8,6 +8,7 @@ from weasel.scanner.cve_scanner import get_cve_for_package, format_cve
 from weasel.scanner.license_checker import get_licenses, simplify_license_info
 from weasel.code_analysis.code_checker import run_bandit_scan
 from weasel.graph.dependency_graph import generate_dependency_graph
+from weasel.graph.generate_dependency_graph_dash import generate_dependency_graph_dash
 from weasel.report.report_generator import build_report_data, generate_reports
 
 def load_config(config_path: Path) -> dict:
@@ -84,7 +85,8 @@ def run_scan(
         typer.echo("Génération du graphe...")
         vuln_names = list(all_vulns.keys())
         graph_path = output / "dependencies.html"
-        generate_dependency_graph(resolved_packages, vuln_names, str(graph_path))
+        #generate_dependency_graph(resolved_packages, vuln_names, str(graph_path))
+        generate_dependency_graph_dash(output / "dependencies_dash.html", resolved_packages)
         typer.echo(f"Graphe généré : {graph_path}")
 
     if any([cve, licenses, code_check]):
