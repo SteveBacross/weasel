@@ -1,3 +1,5 @@
+# weasel/graph/generate_dependency_graph_dash.py
+
 from pathlib import Path
 import json
 import subprocess
@@ -86,18 +88,26 @@ def generate_dependency_graph_dash(
   <script src="https://unpkg.com/cytoscape/dist/cytoscape.min.js"></script>
   <style>
     body {{ margin:0; padding:0; overflow:hidden; }}
-    #cytoscape {{ width:100vw; height:100vh; }}
+    #cytoscape {{
+      position:absolute; top:0; left:0;
+      width:100vw; height:100vh;
+      z-index:1;
+    }}
     #sidebar {{
       position:absolute; top:20px; left:20px;
-      background:rgba(255,255,255,0.95); padding:15px;
-      border-radius:8px; box-shadow:0 2px 8px rgba(0,0,0,0.2);
+      z-index:10;
+      background:rgba(255,255,255,0.95);
+      padding:15px; border-radius:8px;
+      box-shadow:0 2px 8px rgba(0,0,0,0.2);
       width:280px; max-height:90vh; overflow-y:auto;
       font-family:sans-serif;
     }}
     #controls {{
       position:absolute; top:20px; right:20px;
-      background:rgba(255,255,255,0.9); padding:10px;
-      border-radius:6px; box-shadow:0 2px 6px rgba(0,0,0,0.15);
+      z-index:10;
+      background:rgba(255,255,255,0.9);
+      padding:10px; border-radius:6px;
+      box-shadow:0 2px 6px rgba(0,0,0,0.15);
       font-family:sans-serif;
     }}
     #controls select, #controls button {{ margin:5px; padding:5px 8px; }}
@@ -109,7 +119,9 @@ def generate_dependency_graph_dash(
 <body>
   <div id="sidebar">
     <h3>Détails du paquet</h3>
-    <div id="node-details"><p>Cliquez sur un noeud pour voir les détails.</p></div>
+    <div id="node-details">
+      <p>Cliquez sur un noeud pour voir les détails.</p>
+    </div>
   </div>
   <div id="controls">
     <label for="layout-select">Layout:</label>
