@@ -32,7 +32,7 @@
 </head>
 <body>
   <h1>🛡️ Rapport de Sécurité Weasel</h1>
-  <p><strong>Date :</strong> 2025-05-28 03:38:25</p>
+  <p><strong>Date :</strong> 2025-05-28 05:52:01</p>
 
   <h2>📦 Dépendances Installées</h2>
   <details>
@@ -214,7 +214,7 @@
   <h2>🚨 Vulnérabilités détectées</h2>
   <input type="search" id="vulnSearch" onkeyup="searchInTable('vulnTable', 'vulnSearch')" placeholder="Rechercher...">
   <table id="vulnTable">
-    <thead><tr><th>Package</th><th>ID</th><th>Gravité</th><th>Score</th><th>Description</th></tr></thead>
+    <thead><tr><th>Package</th><th>ID</th><th>Gravité</th><th>Score</th><th>Description</th><th>References</th></tr></thead>
     <tbody>
       
         
@@ -223,7 +223,8 @@
           <td>GHSA-v973-fxgf-6xhp</td>
           <td>unknown</td>
           <td>None</td>
-          <td>mako is vulnerable to Regular Expression Denial of Service</td>
+          <td>None</td>
+          <td>-</td>
         </tr>
         
         <tr class="unknown">
@@ -232,6 +233,7 @@
           <td>unknown</td>
           <td>None</td>
           <td>None</td>
+          <td>-</td>
         </tr>
         
       
@@ -241,7 +243,8 @@
           <td>GHSA-5rjg-fvgr-3xxf</td>
           <td>unknown</td>
           <td>None</td>
-          <td>setuptools has a path traversal vulnerability in PackageIndex.download that leads to Arbitrary File Write</td>
+          <td>None</td>
+          <td>-</td>
         </tr>
         
       
@@ -251,7 +254,8 @@
           <td>GHSA-2g68-c3qc-8985</td>
           <td>unknown</td>
           <td>None</td>
-          <td>Werkzeug debugger vulnerable to remote execution when interacting with attacker controlled domain</td>
+          <td>None</td>
+          <td>-</td>
         </tr>
         
         <tr class="unknown">
@@ -259,7 +263,8 @@
           <td>GHSA-f9vj-2wh5-fj8j</td>
           <td>unknown</td>
           <td>None</td>
-          <td>Werkzeug safe_join not safe on Windows</td>
+          <td>None</td>
+          <td>-</td>
         </tr>
         
         <tr class="unknown">
@@ -267,7 +272,8 @@
           <td>GHSA-hrfv-mqp8-q5rw</td>
           <td>unknown</td>
           <td>None</td>
-          <td>Werkzeug DoS: High resource usage when parsing multipart/form-data containing a large part with CR/LF character at the beginning</td>
+          <td>None</td>
+          <td>-</td>
         </tr>
         
         <tr class="unknown">
@@ -275,7 +281,8 @@
           <td>GHSA-px8h-6qxv-m22q</td>
           <td>unknown</td>
           <td>None</td>
-          <td>Incorrect parsing of nameless cookies leads to __Host- cookies bypass</td>
+          <td>None</td>
+          <td>-</td>
         </tr>
         
         <tr class="unknown">
@@ -283,7 +290,8 @@
           <td>GHSA-q34m-jh98-gwm2</td>
           <td>unknown</td>
           <td>None</td>
-          <td>Werkzeug possible resource exhaustion when parsing file data in forms</td>
+          <td>None</td>
+          <td>-</td>
         </tr>
         
         <tr class="unknown">
@@ -291,7 +299,8 @@
           <td>GHSA-xg9f-g7g7-2323</td>
           <td>unknown</td>
           <td>None</td>
-          <td>High resource usage when parsing multipart form data with many fields</td>
+          <td>None</td>
+          <td>-</td>
         </tr>
         
         <tr class="unknown">
@@ -300,6 +309,7 @@
           <td>unknown</td>
           <td>None</td>
           <td>None</td>
+          <td>-</td>
         </tr>
         
         <tr class="unknown">
@@ -308,6 +318,7 @@
           <td>unknown</td>
           <td>None</td>
           <td>None</td>
+          <td>-</td>
         </tr>
         
         <tr class="unknown">
@@ -316,6 +327,7 @@
           <td>unknown</td>
           <td>None</td>
           <td>None</td>
+          <td>-</td>
         </tr>
         
         <tr class="unknown">
@@ -324,6 +336,7 @@
           <td>unknown</td>
           <td>None</td>
           <td>None</td>
+          <td>-</td>
         </tr>
         
       
@@ -928,14 +941,14 @@
       
       <tr>
         <td>weasel\graph\generate_dependency_graph_dash.py</td>
-        <td>12</td>
+        <td>20</td>
         <td>B607</td>
         <td>Starting a process with a partial executable path</td>
       </tr>
       
       <tr>
         <td>weasel\graph\generate_dependency_graph_dash.py</td>
-        <td>12</td>
+        <td>20</td>
         <td>B603</td>
         <td>subprocess call - check for execution of untrusted input.</td>
       </tr>

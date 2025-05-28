@@ -50,7 +50,7 @@
   <h2>🚨 Vulnérabilités détectées</h2>
   <input type="search" id="vulnSearch" onkeyup="searchInTable('vulnTable', 'vulnSearch')" placeholder="Rechercher...">
   <table id="vulnTable">
-    <thead><tr><th>Package</th><th>ID</th><th>Gravité</th><th>Score</th><th>Description</th></tr></thead>
+    <thead><tr><th>Package</th><th>ID</th><th>Gravité</th><th>Score</th><th>Description</th><th>References</th></tr></thead>
     <tbody>
       {% for name, vulns in report.vulnerabilities.items() %}
         {% for v in vulns %}
@@ -60,6 +60,7 @@
           <td>{{ v.severity }}</td>
           <td>{{ v.cvss_score }}</td>
           <td>{{ v.summary }}</td>
+          <td>{{ v.details or '-'}}</td>
         </tr>
         {% endfor %}
       {% endfor %}

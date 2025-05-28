@@ -4,7 +4,7 @@ from pathlib import Path
 from typing import List
 import yaml
 from weasel.parser.requirements import parse_requirements, resolve_all_dependencies, get_package_author, compute_full_origins
-from weasel.scanner.cve_scanner import get_cve_for_package, format_cve
+from weasel.scanner.cve_scanner import get_cve_for_package,get_cves_for_packages, format_cve
 from weasel.scanner.license_checker import get_licenses, simplify_license_info
 from weasel.code_analysis.code_checker import run_bandit_scan
 from weasel.graph.dependency_graph import generate_dependency_graph
@@ -63,19 +63,22 @@ def run_scan(
     ignore_tests = bandit_config.get("ignore_tests", ignore_rules)
 
     if cve:
-        typer.echo("Analyse des CVEs...")
-        for pkg in resolved_packages:
-            name = pkg.get("name")
-            version = pkg.get("version")
-            if not version:
-                typer.echo(f"[WARN] {name} sans version, CVE ignoré.")
-                continue
-            vulns = get_cve_for_package(name, version, offline=offline)
+        typer.echo("Analyse des CVEs en batch…")
+        # Prépare la liste name/version pour lesquels on a une version
+        pkg_list = [
+            {"name": pkg["name"], "version": pkg["version"]}
+            for pkg in resolved_packages
+            if pkg.get("version")
+        ]
+        # Requête batch et récupération du mapping name -> list[vuln]
+        batch_map = get_cves_for_packages(pkg_list, offline=offline)
+
+        for name, vulns in batch_map.items():
             if vulns:
                 all_vulns[name] = [format_cve(v) for v in vulns]
-                typer.echo(f"Vulnérabilités pour {name}=={version} : {len(vulns)}")
+                typer.echo(f"• {name}: {len(vulns)} vulnérabilités détectées")
             else:
-                typer.echo(f" {name}=={version} : aucune vulnérabilité")
+                typer.echo(f"• {name}: aucune vulnérabilité")
 
     if licenses:
         typer.echo("Analyse des licences...")
@@ -91,12 +94,19 @@ def run_scan(
             typer.echo(f"{issue['filename']}:{issue['line_number']} - {issue['test_id']} {issue['issue_text']}")
 
     if graph:
-        typer.echo("Génération du graphe...")
-        vuln_names = list(all_vulns.keys())
-        graph_path = output / "dependencies.html"
-        #generate_dependency_graph(resolved_packages, vuln_names, str(graph_path))
-        generate_dependency_graph_dash(output / "dependencies_dash.html", resolved_packages)
-        typer.echo(f"Graphe généré : {graph_path}")
+       typer.echo("Génération du graphe interactif Dash/Cytoscape…")
+       # Chemin de sortie
+       dash_path = output / "dependencies_dash.html"
+       # Liste des paquets directement déclarés
+       direct_names = [pkg["name"] for pkg in parsed_packages]
+       # Appel avec resolved_packages, direct_packages et map des vulnérabilités
+       generate_dependency_graph_dash(
+            dash_path,
+            resolved_packages,
+            direct_names,
+            all_vulns
+        )
+    typer.echo(f"Graphe interactif généré : {dash_path}")
 
     if any([cve, licenses, code_check]):
         typer.echo("Génération du rapport...")
