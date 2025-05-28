@@ -1,0 +1,196 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 100%;
+                 height: 800px;
+                 background-color: #111111;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+
+    <style>
+      #sidebar {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        width: 300px;
+        background: #222;
+        color: white;
+        padding: 15px;
+        border-radius: 8px;
+        z-index: 100;
+        font-family: sans-serif;
+        font-size: 14px;
+      }
+      #sidebar h3 { margin-top: 0; }
+      .info-block { margin-bottom: 10px; }
+      input[type="text"] {
+        width: 100%;
+        padding: 6px;
+        margin-bottom: 10px;
+        border-radius: 4px;
+        border: none;
+      }
+      label {
+        display: block;
+        margin-top: 10px;
+      }
+    </style>
+
+    <div id="sidebar">
+      <input type="text" id="searchInput" placeholder="🔍 Rechercher un package..." oninput="filterNodes()">
+      <label><input type="checkbox" id="vulnOnly" onchange="filterNodes()"> Afficher seulement les vulnérables</label>
+      <hr>
+      <div class="info-block" id="nodeInfo">
+        <h3>Détails</h3>
+        <p>Cliquez sur un nœud pour voir les infos ici.</p>
+      </div>
+    </div>
+
+    <script>
+      function filterNodes() {
+        var input = document.getElementById("searchInput").value.toLowerCase();
+        var vulnOnly = document.getElementById("vulnOnly").checked;
+        network.body.data.nodes.forEach(function(node) {
+          const match = node.label.toLowerCase().includes(input);
+          const isVuln = node.group === "vuln";
+          node.hidden = (vulnOnly && !isVuln) || !match;
+        });
+      }
+
+      network.on("click", function(params) {
+        if (params.nodes.length > 0) {
+          var nodeId = params.nodes[0];
+          var node = network.body.data.nodes.get(nodeId);
+          var nodeData = {"annotated-types": {"name": "annotated-types", "version": "0.7.0", "vuln": false, "deps": [], "dependents": ["pydantic"]}, "asttokens": {"name": "asttokens", "version": "3.0.0", "vuln": false, "deps": [], "dependents": ["stack-data"]}, "authlib": {"name": "authlib", "version": "1.5.1", "vuln": false, "deps": ["cryptography"], "dependents": ["safety"]}, "bandit": {"name": "bandit", "version": "1.8.3", "vuln": false, "deps": ["colorama", "pyyaml", "rich", "stevedore"], "dependents": ["weasel"]}, "brotli": {"name": "brotli", "version": "1.1.0", "vuln": false, "deps": [], "dependents": []}, "certifi": {"name": "certifi", "version": "2025.1.31", "vuln": false, "deps": [], "dependents": ["requests"]}, "cffi": {"name": "cffi", "version": "1.17.1", "vuln": false, "deps": ["pycparser"], "dependents": ["cryptography", "weasyprint"]}, "chardet": {"name": "chardet", "version": "5.2.0", "vuln": false, "deps": [], "dependents": ["weasel"]}, "charset-normalizer": {"name": "charset-normalizer", "version": "3.4.1", "vuln": false, "deps": [], "dependents": ["requests"]}, "click": {"name": "click", "version": "8.1.8", "vuln": false, "deps": ["colorama"], "dependents": ["nltk", "safety", "typer", "weasel"]}, "colorama": {"name": "colorama", "version": "0.4.6", "vuln": false, "deps": [], "dependents": ["bandit", "click", "ipython", "pytest", "tqdm"]}, "cryptography": {"name": "cryptography", "version": "44.0.2", "vuln": false, "deps": ["cffi"], "dependents": ["authlib"]}, "cssselect2": {"name": "cssselect2", "version": "0.8.0", "vuln": false, "deps": ["tinycss2", "webencodings"], "dependents": ["weasyprint"]}, "decorator": {"name": "decorator", "version": "5.2.1", "vuln": false, "deps": [], "dependents": ["ipython"]}, "defusedxml": {"name": "defusedxml", "version": "0.6.0", "vuln": false, "deps": [], "dependents": []}, "dparse": {"name": "dparse", "version": "0.6.4", "vuln": false, "deps": ["packaging"], "dependents": ["safety", "safety-schemas"]}, "executing": {"name": "executing", "version": "2.2.0", "vuln": false, "deps": [], "dependents": ["stack-data"]}, "filelock": {"name": "filelock", "version": "3.16.1", "vuln": false, "deps": [], "dependents": ["safety"]}, "fonttools": {"name": "fonttools", "version": "4.57.0", "vuln": false, "deps": [], "dependents": ["weasyprint"]}, "idna": {"name": "idna", "version": "3.10", "vuln": false, "deps": [], "dependents": ["requests"]}, "iniconfig": {"name": "iniconfig", "version": "2.1.0", "vuln": false, "deps": [], "dependents": ["pytest"]}, "ipython": {"name": "ipython", "version": "9.0.2", "vuln": false, "deps": ["colorama", "decorator", "ipython-pygments-lexers", "jedi", "matplotlib-inline", "prompt-toolkit", "pygments", "stack-data", "traitlets"], "dependents": ["pyvis"]}, "ipython-pygments-lexers": {"name": "ipython-pygments-lexers", "version": "", "vuln": false, "deps": ["pygments"], "dependents": ["ipython"]}, "itsdangerous": {"name": "itsdangerous", "version": "1.1.0", "vuln": false, "deps": [], "dependents": []}, "jedi": {"name": "jedi", "version": "0.19.2", "vuln": false, "deps": ["parso"], "dependents": ["ipython"]}, "jinja2": {"name": "jinja2", "version": "3.1.6", "vuln": false, "deps": ["markupsafe"], "dependents": ["pyvis", "safety", "weasel"]}, "joblib": {"name": "joblib", "version": "1.4.2", "vuln": false, "deps": [], "dependents": ["nltk"]}, "jsonpickle": {"name": "jsonpickle", "version": "4.0.2", "vuln": false, "deps": [], "dependents": ["pyvis"]}, "mako": {"name": "mako", "version": "1.1.0", "vuln": false, "deps": ["markupsafe"], "dependents": []}, "markdown-it-py": {"name": "markdown-it-py", "version": "3.0.0", "vuln": false, "deps": ["mdurl"], "dependents": ["rich"]}, "markupsafe": {"name": "markupsafe", "version": "3.0.2", "vuln": false, "deps": [], "dependents": ["jinja2", "mako"]}, "marshmallow": {"name": "marshmallow", "version": "3.26.1", "vuln": false, "deps": ["packaging"], "dependents": ["safety"]}, "matplotlib-inline": {"name": "matplotlib-inline", "version": "0.1.7", "vuln": false, "deps": ["traitlets"], "dependents": ["ipython"]}, "mdurl": {"name": "mdurl", "version": "0.1.2", "vuln": false, "deps": [], "dependents": ["markdown-it-py"]}, "networkx": {"name": "networkx", "version": "3.4.2", "vuln": false, "deps": [], "dependents": ["pyvis"]}, "nltk": {"name": "nltk", "version": "3.9.1", "vuln": false, "deps": ["click", "joblib", "regex", "tqdm"], "dependents": ["safety"]}, "packaging": {"name": "packaging", "version": "24.2", "vuln": false, "deps": [], "dependents": ["dparse", "marshmallow", "pipdeptree", "pytest", "safety", "safety-schemas", "weasel"]}, "parso": {"name": "parso", "version": "0.8.4", "vuln": false, "deps": [], "dependents": ["jedi"]}, "pbr": {"name": "pbr", "version": "6.1.1", "vuln": false, "deps": ["setuptools"], "dependents": ["stevedore"]}, "pillow": {"name": "pillow", "version": "11.1.0", "vuln": false, "deps": [], "dependents": ["weasyprint"]}, "pip": {"name": "pip", "version": "24.3.1", "vuln": false, "deps": [], "dependents": ["pipdeptree"]}, "pip-licenses": {"name": "pip-licenses", "version": "5.0.0", "vuln": false, "deps": ["prettytable", "tomli"], "dependents": ["weasel"]}, "pipdeptree": {"name": "pipdeptree", "version": "2.25.1", "vuln": false, "deps": ["packaging", "pip"], "dependents": ["weasel"]}, "pluggy": {"name": "pluggy", "version": "1.5.0", "vuln": false, "deps": [], "dependents": ["pytest"]}, "prettytable": {"name": "prettytable", "version": "3.16.0", "vuln": false, "deps": ["wcwidth"], "dependents": ["pip-licenses"]}, "prompt-toolkit": {"name": "prompt-toolkit", "version": "", "vuln": false, "deps": ["wcwidth"], "dependents": ["ipython"]}, "psutil": {"name": "psutil", "version": "6.1.1", "vuln": false, "deps": [], "dependents": ["safety"]}, "pure-eval": {"name": "pure-eval", "version": "", "vuln": false, "deps": [], "dependents": ["stack-data"]}, "pycparser": {"name": "pycparser", "version": "2.22", "vuln": false, "deps": [], "dependents": ["cffi"]}, "pydantic": {"name": "pydantic", "version": "2.9.2", "vuln": false, "deps": ["annotated-types", "pydantic-core", "typing-extensions"], "dependents": ["safety", "safety-schemas"]}, "pydantic-core": {"name": "pydantic-core", "version": "", "vuln": false, "deps": ["typing-extensions"], "dependents": ["pydantic"]}, "pydyf": {"name": "pydyf", "version": "0.11.0", "vuln": false, "deps": [], "dependents": ["weasyprint"]}, "pygments": {"name": "pygments", "version": "2.19.1", "vuln": false, "deps": [], "dependents": ["ipython", "ipython-pygments-lexers", "rich"]}, "pyphen": {"name": "pyphen", "version": "0.17.2", "vuln": false, "deps": [], "dependents": ["weasyprint"]}, "pytest": {"name": "pytest", "version": "8.3.5", "vuln": false, "deps": ["colorama", "iniconfig", "packaging", "pluggy"], "dependents": []}, "pyvis": {"name": "pyvis", "version": "0.3.2", "vuln": false, "deps": ["ipython", "jinja2", "jsonpickle", "networkx"], "dependents": ["weasel"]}, "pyyaml": {"name": "pyyaml", "version": "6.0.2", "vuln": false, "deps": [], "dependents": ["bandit"]}, "regex": {"name": "regex", "version": "2024.11.6", "vuln": false, "deps": [], "dependents": ["nltk"]}, "requests": {"name": "requests", "version": "2.32.3", "vuln": false, "deps": ["certifi", "charset-normalizer", "idna", "urllib3"], "dependents": ["safety", "weasel"]}, "rich": {"name": "rich", "version": "13.9.4", "vuln": false, "deps": ["markdown-it-py", "pygments"], "dependents": ["bandit", "typer", "weasel"]}, "ruamel-yaml": {"name": "ruamel-yaml", "version": "", "vuln": false, "deps": ["ruamel-yaml-clib"], "dependents": ["safety", "safety-schemas"]}, "ruamel-yaml-clib": {"name": "ruamel-yaml-clib", "version": "", "vuln": false, "deps": [], "dependents": ["ruamel-yaml"]}, "safety": {"name": "safety", "version": "3.3.1", "vuln": false, "deps": ["authlib", "click", "dparse", "filelock", "jinja2", "marshmallow", "nltk", "packaging", "psutil", "pydantic", "requests", "ruamel-yaml", "safety-schemas", "setuptools", "typer", "typing-extensions"], "dependents": []}, "safety-schemas": {"name": "safety-schemas", "version": "0.0.11", "vuln": false, "deps": ["dparse", "packaging", "pydantic", "ruamel-yaml", "typing-extensions"], "dependents": ["safety"]}, "setuptools": {"name": "setuptools", "version": "77.0.3", "vuln": false, "deps": [], "dependents": ["pbr", "safety"]}, "shellingham": {"name": "shellingham", "version": "1.5.4", "vuln": false, "deps": [], "dependents": ["typer", "weasel"]}, "simplejson": {"name": "simplejson", "version": "3.16.0", "vuln": false, "deps": [], "dependents": []}, "stack-data": {"name": "stack-data", "version": "0.6.3", "vuln": false, "deps": ["asttokens", "executing", "pure-eval"], "dependents": ["ipython"]}, "stevedore": {"name": "stevedore", "version": "5.4.1", "vuln": false, "deps": ["pbr"], "dependents": ["bandit"]}, "tinycss2": {"name": "tinycss2", "version": "1.4.0", "vuln": false, "deps": ["webencodings"], "dependents": ["cssselect2", "weasyprint"]}, "tinyhtml5": {"name": "tinyhtml5", "version": "2.0.0", "vuln": false, "deps": ["webencodings"], "dependents": ["weasyprint"]}, "tomli": {"name": "tomli", "version": "2.2.1", "vuln": false, "deps": [], "dependents": ["pip-licenses"]}, "tqdm": {"name": "tqdm", "version": "4.67.1", "vuln": false, "deps": ["colorama"], "dependents": ["nltk"]}, "traitlets": {"name": "traitlets", "version": "5.14.3", "vuln": false, "deps": [], "dependents": ["ipython", "matplotlib-inline"]}, "typer": {"name": "typer", "version": "0.15.2", "vuln": false, "deps": ["click", "rich", "shellingham", "typing-extensions"], "dependents": ["safety", "weasel"]}, "typing-extensions": {"name": "typing-extensions", "version": "", "vuln": false, "deps": [], "dependents": ["pydantic", "pydantic-core", "safety", "safety-schemas", "typer"]}, "urllib3": {"name": "urllib3", "version": "2.3.0", "vuln": false, "deps": [], "dependents": ["requests"]}, "wcwidth": {"name": "wcwidth", "version": "0.2.13", "vuln": false, "deps": [], "dependents": ["prettytable", "prompt-toolkit"]}, "weasel": {"name": "weasel", "version": "1.0.0", "vuln": false, "deps": ["bandit", "chardet", "click", "jinja2", "packaging", "pip-licenses", "pipdeptree", "pyvis", "requests", "rich", "shellingham", "typer", "weasyprint"], "dependents": []}, "weasyprint": {"name": "weasyprint", "version": "65.0", "vuln": false, "deps": ["cffi", "cssselect2", "fonttools", "pillow", "pydyf", "pyphen", "tinycss2", "tinyhtml5"], "dependents": ["weasel"]}, "webencodings": {"name": "webencodings", "version": "0.5.1", "vuln": false, "deps": [], "dependents": ["cssselect2", "tinycss2", "tinyhtml5"]}, "werkzeug": {"name": "werkzeug", "version": "0.16.0", "vuln": false, "deps": [], "dependents": []}, "zopfli": {"name": "zopfli", "version": "0.2.3.post1", "vuln": false, "deps": [], "dependents": []}};
+          var info = nodeData[nodeId];
+          var html = `
+            <h3>${node.label}</h3>
+            <p><b>Version :</b> ${info.version}</p>
+            <p><b>Vulnérable :</b> ${info.vuln ? "Oui" : "Non"}</p>
+            <p><b>Dépend de :</b> ${info.deps.length}</p>
+            <p><b>Utilisé par :</b> ${info.dependents.length}</p>
+          `;
+          document.getElementById("nodeInfo").innerHTML = html;
+        }
+      });
+    </script>
+    
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"font": {"color": "white"}, "group": "safe", "id": "annotated-types", "label": "annotated-types@0.7.0", "shape": "dot", "title": "annotated-types v0.7.0"}, {"font": {"color": "white"}, "group": "safe", "id": "asttokens", "label": "asttokens@3.0.0", "shape": "dot", "title": "asttokens v3.0.0"}, {"font": {"color": "white"}, "group": "safe", "id": "authlib", "label": "authlib@1.5.1", "shape": "dot", "title": "authlib v1.5.1"}, {"font": {"color": "white"}, "group": "safe", "id": "cryptography", "label": "cryptography@44.0.2", "shape": "dot", "title": "cryptography"}, {"font": {"color": "white"}, "group": "safe", "id": "bandit", "label": "bandit@1.8.3", "shape": "dot", "title": "bandit v1.8.3"}, {"font": {"color": "white"}, "group": "safe", "id": "colorama", "label": "colorama@0.4.6", "shape": "dot", "title": "colorama"}, {"font": {"color": "white"}, "group": "safe", "id": "pyyaml", "label": "pyyaml@6.0.2", "shape": "dot", "title": "pyyaml"}, {"font": {"color": "white"}, "group": "safe", "id": "rich", "label": "rich@13.9.4", "shape": "dot", "title": "rich"}, {"font": {"color": "white"}, "group": "safe", "id": "stevedore", "label": "stevedore@5.4.1", "shape": "dot", "title": "stevedore"}, {"font": {"color": "white"}, "group": "safe", "id": "brotli", "label": "brotli@1.1.0", "shape": "dot", "title": "brotli v1.1.0"}, {"font": {"color": "white"}, "group": "safe", "id": "certifi", "label": "certifi@2025.1.31", "shape": "dot", "title": "certifi v2025.1.31"}, {"font": {"color": "white"}, "group": "safe", "id": "cffi", "label": "cffi@1.17.1", "shape": "dot", "title": "cffi v1.17.1"}, {"font": {"color": "white"}, "group": "safe", "id": "pycparser", "label": "pycparser@2.22", "shape": "dot", "title": "pycparser"}, {"font": {"color": "white"}, "group": "safe", "id": "chardet", "label": "chardet@5.2.0", "shape": "dot", "title": "chardet v5.2.0"}, {"font": {"color": "white"}, "group": "safe", "id": "charset-normalizer", "label": "charset-normalizer@3.4.1", "shape": "dot", "title": "charset-normalizer v3.4.1"}, {"font": {"color": "white"}, "group": "safe", "id": "click", "label": "click@8.1.8", "shape": "dot", "title": "click v8.1.8"}, {"font": {"color": "white"}, "group": "safe", "id": "cssselect2", "label": "cssselect2@0.8.0", "shape": "dot", "title": "cssselect2 v0.8.0"}, {"font": {"color": "white"}, "group": "safe", "id": "tinycss2", "label": "tinycss2@1.4.0", "shape": "dot", "title": "tinycss2"}, {"font": {"color": "white"}, "group": "safe", "id": "webencodings", "label": "webencodings@0.5.1", "shape": "dot", "title": "webencodings"}, {"font": {"color": "white"}, "group": "safe", "id": "decorator", "label": "decorator@5.2.1", "shape": "dot", "title": "decorator v5.2.1"}, {"font": {"color": "white"}, "group": "safe", "id": "defusedxml", "label": "defusedxml@0.6.0", "shape": "dot", "title": "defusedxml v0.6.0"}, {"font": {"color": "white"}, "group": "safe", "id": "dparse", "label": "dparse@0.6.4", "shape": "dot", "title": "dparse v0.6.4"}, {"font": {"color": "white"}, "group": "safe", "id": "packaging", "label": "packaging@24.2", "shape": "dot", "title": "packaging"}, {"font": {"color": "white"}, "group": "safe", "id": "executing", "label": "executing@2.2.0", "shape": "dot", "title": "executing v2.2.0"}, {"font": {"color": "white"}, "group": "safe", "id": "filelock", "label": "filelock@3.16.1", "shape": "dot", "title": "filelock v3.16.1"}, {"font": {"color": "white"}, "group": "safe", "id": "fonttools", "label": "fonttools@4.57.0", "shape": "dot", "title": "fonttools v4.57.0"}, {"font": {"color": "white"}, "group": "safe", "id": "idna", "label": "idna@3.10", "shape": "dot", "title": "idna v3.10"}, {"font": {"color": "white"}, "group": "safe", "id": "iniconfig", "label": "iniconfig@2.1.0", "shape": "dot", "title": "iniconfig v2.1.0"}, {"font": {"color": "white"}, "group": "safe", "id": "ipython", "label": "ipython@9.0.2", "shape": "dot", "title": "ipython v9.0.2"}, {"font": {"color": "white"}, "group": "safe", "id": "ipython-pygments-lexers", "label": "ipython-pygments-lexers", "shape": "dot", "title": "ipython-pygments-lexers"}, {"font": {"color": "white"}, "group": "safe", "id": "jedi", "label": "jedi@0.19.2", "shape": "dot", "title": "jedi"}, {"font": {"color": "white"}, "group": "safe", "id": "matplotlib-inline", "label": "matplotlib-inline@0.1.7", "shape": "dot", "title": "matplotlib-inline"}, {"font": {"color": "white"}, "group": "safe", "id": "prompt-toolkit", "label": "prompt-toolkit", "shape": "dot", "title": "prompt-toolkit"}, {"font": {"color": "white"}, "group": "safe", "id": "pygments", "label": "pygments@2.19.1", "shape": "dot", "title": "pygments"}, {"font": {"color": "white"}, "group": "safe", "id": "stack-data", "label": "stack-data@0.6.3", "shape": "dot", "title": "stack-data"}, {"font": {"color": "white"}, "group": "safe", "id": "traitlets", "label": "traitlets@5.14.3", "shape": "dot", "title": "traitlets"}, {"font": {"color": "white"}, "group": "safe", "id": "itsdangerous", "label": "itsdangerous@1.1.0", "shape": "dot", "title": "itsdangerous v1.1.0"}, {"font": {"color": "white"}, "group": "safe", "id": "parso", "label": "parso@0.8.4", "shape": "dot", "title": "parso"}, {"font": {"color": "white"}, "group": "safe", "id": "jinja2", "label": "jinja2@3.1.6", "shape": "dot", "title": "jinja2 v3.1.6"}, {"font": {"color": "white"}, "group": "safe", "id": "markupsafe", "label": "markupsafe@3.0.2", "shape": "dot", "title": "markupsafe"}, {"font": {"color": "white"}, "group": "safe", "id": "joblib", "label": "joblib@1.4.2", "shape": "dot", "title": "joblib v1.4.2"}, {"font": {"color": "white"}, "group": "safe", "id": "jsonpickle", "label": "jsonpickle@4.0.2", "shape": "dot", "title": "jsonpickle v4.0.2"}, {"font": {"color": "white"}, "group": "safe", "id": "mako", "label": "mako@1.1.0", "shape": "dot", "title": "mako v1.1.0"}, {"font": {"color": "white"}, "group": "safe", "id": "markdown-it-py", "label": "markdown-it-py@3.0.0", "shape": "dot", "title": "markdown-it-py v3.0.0"}, {"font": {"color": "white"}, "group": "safe", "id": "mdurl", "label": "mdurl@0.1.2", "shape": "dot", "title": "mdurl"}, {"font": {"color": "white"}, "group": "safe", "id": "marshmallow", "label": "marshmallow@3.26.1", "shape": "dot", "title": "marshmallow v3.26.1"}, {"font": {"color": "white"}, "group": "safe", "id": "networkx", "label": "networkx@3.4.2", "shape": "dot", "title": "networkx v3.4.2"}, {"font": {"color": "white"}, "group": "safe", "id": "nltk", "label": "nltk@3.9.1", "shape": "dot", "title": "nltk v3.9.1"}, {"font": {"color": "white"}, "group": "safe", "id": "regex", "label": "regex@2024.11.6", "shape": "dot", "title": "regex"}, {"font": {"color": "white"}, "group": "safe", "id": "tqdm", "label": "tqdm@4.67.1", "shape": "dot", "title": "tqdm"}, {"font": {"color": "white"}, "group": "safe", "id": "pbr", "label": "pbr@6.1.1", "shape": "dot", "title": "pbr v6.1.1"}, {"font": {"color": "white"}, "group": "safe", "id": "setuptools", "label": "setuptools@77.0.3", "shape": "dot", "title": "setuptools"}, {"font": {"color": "white"}, "group": "safe", "id": "pillow", "label": "pillow@11.1.0", "shape": "dot", "title": "pillow v11.1.0"}, {"font": {"color": "white"}, "group": "safe", "id": "pip", "label": "pip@24.3.1", "shape": "dot", "title": "pip v24.3.1"}, {"font": {"color": "white"}, "group": "safe", "id": "pip-licenses", "label": "pip-licenses@5.0.0", "shape": "dot", "title": "pip-licenses v5.0.0"}, {"font": {"color": "white"}, "group": "safe", "id": "prettytable", "label": "prettytable@3.16.0", "shape": "dot", "title": "prettytable"}, {"font": {"color": "white"}, "group": "safe", "id": "tomli", "label": "tomli@2.2.1", "shape": "dot", "title": "tomli"}, {"font": {"color": "white"}, "group": "safe", "id": "pipdeptree", "label": "pipdeptree@2.25.1", "shape": "dot", "title": "pipdeptree v2.25.1"}, {"font": {"color": "white"}, "group": "safe", "id": "pluggy", "label": "pluggy@1.5.0", "shape": "dot", "title": "pluggy v1.5.0"}, {"font": {"color": "white"}, "group": "safe", "id": "wcwidth", "label": "wcwidth@0.2.13", "shape": "dot", "title": "wcwidth"}, {"font": {"color": "white"}, "group": "safe", "id": "psutil", "label": "psutil@6.1.1", "shape": "dot", "title": "psutil v6.1.1"}, {"font": {"color": "white"}, "group": "safe", "id": "pure-eval", "label": "pure-eval", "shape": "dot", "title": "pure-eval"}, {"font": {"color": "white"}, "group": "safe", "id": "pydantic", "label": "pydantic@2.9.2", "shape": "dot", "title": "pydantic v2.9.2"}, {"font": {"color": "white"}, "group": "safe", "id": "pydantic-core", "label": "pydantic-core", "shape": "dot", "title": "pydantic-core"}, {"font": {"color": "white"}, "group": "safe", "id": "typing-extensions", "label": "typing-extensions", "shape": "dot", "title": "typing-extensions"}, {"font": {"color": "white"}, "group": "safe", "id": "pydyf", "label": "pydyf@0.11.0", "shape": "dot", "title": "pydyf v0.11.0"}, {"font": {"color": "white"}, "group": "safe", "id": "pyphen", "label": "pyphen@0.17.2", "shape": "dot", "title": "pyphen v0.17.2"}, {"font": {"color": "white"}, "group": "safe", "id": "pytest", "label": "pytest@8.3.5", "shape": "dot", "title": "pytest v8.3.5"}, {"font": {"color": "white"}, "group": "safe", "id": "pyvis", "label": "pyvis@0.3.2", "shape": "dot", "title": "pyvis v0.3.2"}, {"font": {"color": "white"}, "group": "safe", "id": "requests", "label": "requests@2.32.3", "shape": "dot", "title": "requests v2.32.3"}, {"font": {"color": "white"}, "group": "safe", "id": "urllib3", "label": "urllib3@2.3.0", "shape": "dot", "title": "urllib3"}, {"font": {"color": "white"}, "group": "safe", "id": "ruamel-yaml", "label": "ruamel-yaml", "shape": "dot", "title": "ruamel-yaml"}, {"font": {"color": "white"}, "group": "safe", "id": "ruamel-yaml-clib", "label": "ruamel-yaml-clib", "shape": "dot", "title": "ruamel-yaml-clib"}, {"font": {"color": "white"}, "group": "safe", "id": "safety", "label": "safety@3.3.1", "shape": "dot", "title": "safety v3.3.1"}, {"font": {"color": "white"}, "group": "safe", "id": "safety-schemas", "label": "safety-schemas@0.0.11", "shape": "dot", "title": "safety-schemas"}, {"font": {"color": "white"}, "group": "safe", "id": "typer", "label": "typer@0.15.2", "shape": "dot", "title": "typer"}, {"font": {"color": "white"}, "group": "safe", "id": "shellingham", "label": "shellingham@1.5.4", "shape": "dot", "title": "shellingham v1.5.4"}, {"font": {"color": "white"}, "group": "safe", "id": "simplejson", "label": "simplejson@3.16.0", "shape": "dot", "title": "simplejson v3.16.0"}, {"font": {"color": "white"}, "group": "safe", "id": "tinyhtml5", "label": "tinyhtml5@2.0.0", "shape": "dot", "title": "tinyhtml5 v2.0.0"}, {"font": {"color": "white"}, "group": "safe", "id": "weasel", "label": "weasel@1.0.0", "shape": "dot", "title": "weasel v1.0.0"}, {"font": {"color": "white"}, "group": "safe", "id": "weasyprint", "label": "weasyprint@65.0", "shape": "dot", "title": "weasyprint"}, {"font": {"color": "white"}, "group": "safe", "id": "werkzeug", "label": "werkzeug@0.16.0", "shape": "dot", "title": "werkzeug v0.16.0"}, {"font": {"color": "white"}, "group": "safe", "id": "zopfli", "label": "zopfli@0.2.3.post1", "shape": "dot", "title": "zopfli v0.2.3.post1"}]);
+                  edges = new vis.DataSet([{"arrows": "to", "from": "authlib", "to": "cryptography"}, {"arrows": "to", "from": "bandit", "to": "colorama"}, {"arrows": "to", "from": "bandit", "to": "pyyaml"}, {"arrows": "to", "from": "bandit", "to": "rich"}, {"arrows": "to", "from": "bandit", "to": "stevedore"}, {"arrows": "to", "from": "cffi", "to": "pycparser"}, {"arrows": "to", "from": "click", "to": "colorama"}, {"arrows": "to", "from": "cryptography", "to": "cffi"}, {"arrows": "to", "from": "cssselect2", "to": "tinycss2"}, {"arrows": "to", "from": "cssselect2", "to": "webencodings"}, {"arrows": "to", "from": "dparse", "to": "packaging"}, {"arrows": "to", "from": "ipython", "to": "colorama"}, {"arrows": "to", "from": "ipython", "to": "decorator"}, {"arrows": "to", "from": "ipython", "to": "ipython-pygments-lexers"}, {"arrows": "to", "from": "ipython", "to": "jedi"}, {"arrows": "to", "from": "ipython", "to": "matplotlib-inline"}, {"arrows": "to", "from": "ipython", "to": "prompt-toolkit"}, {"arrows": "to", "from": "ipython", "to": "pygments"}, {"arrows": "to", "from": "ipython", "to": "stack-data"}, {"arrows": "to", "from": "ipython", "to": "traitlets"}, {"arrows": "to", "from": "ipython-pygments-lexers", "to": "pygments"}, {"arrows": "to", "from": "jedi", "to": "parso"}, {"arrows": "to", "from": "jinja2", "to": "markupsafe"}, {"arrows": "to", "from": "mako", "to": "markupsafe"}, {"arrows": "to", "from": "markdown-it-py", "to": "mdurl"}, {"arrows": "to", "from": "marshmallow", "to": "packaging"}, {"arrows": "to", "from": "matplotlib-inline", "to": "traitlets"}, {"arrows": "to", "from": "nltk", "to": "click"}, {"arrows": "to", "from": "nltk", "to": "joblib"}, {"arrows": "to", "from": "nltk", "to": "regex"}, {"arrows": "to", "from": "nltk", "to": "tqdm"}, {"arrows": "to", "from": "pbr", "to": "setuptools"}, {"arrows": "to", "from": "pip-licenses", "to": "prettytable"}, {"arrows": "to", "from": "pip-licenses", "to": "tomli"}, {"arrows": "to", "from": "pipdeptree", "to": "packaging"}, {"arrows": "to", "from": "pipdeptree", "to": "pip"}, {"arrows": "to", "from": "prettytable", "to": "wcwidth"}, {"arrows": "to", "from": "prompt-toolkit", "to": "wcwidth"}, {"arrows": "to", "from": "pydantic", "to": "annotated-types"}, {"arrows": "to", "from": "pydantic", "to": "pydantic-core"}, {"arrows": "to", "from": "pydantic", "to": "typing-extensions"}, {"arrows": "to", "from": "pydantic-core", "to": "typing-extensions"}, {"arrows": "to", "from": "pytest", "to": "colorama"}, {"arrows": "to", "from": "pytest", "to": "iniconfig"}, {"arrows": "to", "from": "pytest", "to": "packaging"}, {"arrows": "to", "from": "pytest", "to": "pluggy"}, {"arrows": "to", "from": "pyvis", "to": "ipython"}, {"arrows": "to", "from": "pyvis", "to": "jinja2"}, {"arrows": "to", "from": "pyvis", "to": "jsonpickle"}, {"arrows": "to", "from": "pyvis", "to": "networkx"}, {"arrows": "to", "from": "requests", "to": "certifi"}, {"arrows": "to", "from": "requests", "to": "charset-normalizer"}, {"arrows": "to", "from": "requests", "to": "idna"}, {"arrows": "to", "from": "requests", "to": "urllib3"}, {"arrows": "to", "from": "rich", "to": "markdown-it-py"}, {"arrows": "to", "from": "rich", "to": "pygments"}, {"arrows": "to", "from": "ruamel-yaml", "to": "ruamel-yaml-clib"}, {"arrows": "to", "from": "safety", "to": "authlib"}, {"arrows": "to", "from": "safety", "to": "click"}, {"arrows": "to", "from": "safety", "to": "dparse"}, {"arrows": "to", "from": "safety", "to": "filelock"}, {"arrows": "to", "from": "safety", "to": "jinja2"}, {"arrows": "to", "from": "safety", "to": "marshmallow"}, {"arrows": "to", "from": "safety", "to": "nltk"}, {"arrows": "to", "from": "safety", "to": "packaging"}, {"arrows": "to", "from": "safety", "to": "psutil"}, {"arrows": "to", "from": "safety", "to": "pydantic"}, {"arrows": "to", "from": "safety", "to": "requests"}, {"arrows": "to", "from": "safety", "to": "ruamel-yaml"}, {"arrows": "to", "from": "safety", "to": "safety-schemas"}, {"arrows": "to", "from": "safety", "to": "setuptools"}, {"arrows": "to", "from": "safety", "to": "typer"}, {"arrows": "to", "from": "safety", "to": "typing-extensions"}, {"arrows": "to", "from": "safety-schemas", "to": "dparse"}, {"arrows": "to", "from": "safety-schemas", "to": "packaging"}, {"arrows": "to", "from": "safety-schemas", "to": "pydantic"}, {"arrows": "to", "from": "safety-schemas", "to": "ruamel-yaml"}, {"arrows": "to", "from": "safety-schemas", "to": "typing-extensions"}, {"arrows": "to", "from": "stack-data", "to": "asttokens"}, {"arrows": "to", "from": "stack-data", "to": "executing"}, {"arrows": "to", "from": "stack-data", "to": "pure-eval"}, {"arrows": "to", "from": "stevedore", "to": "pbr"}, {"arrows": "to", "from": "tinycss2", "to": "webencodings"}, {"arrows": "to", "from": "tinyhtml5", "to": "webencodings"}, {"arrows": "to", "from": "tqdm", "to": "colorama"}, {"arrows": "to", "from": "typer", "to": "click"}, {"arrows": "to", "from": "typer", "to": "rich"}, {"arrows": "to", "from": "typer", "to": "shellingham"}, {"arrows": "to", "from": "typer", "to": "typing-extensions"}, {"arrows": "to", "from": "weasel", "to": "bandit"}, {"arrows": "to", "from": "weasel", "to": "chardet"}, {"arrows": "to", "from": "weasel", "to": "click"}, {"arrows": "to", "from": "weasel", "to": "jinja2"}, {"arrows": "to", "from": "weasel", "to": "packaging"}, {"arrows": "to", "from": "weasel", "to": "pip-licenses"}, {"arrows": "to", "from": "weasel", "to": "pipdeptree"}, {"arrows": "to", "from": "weasel", "to": "pyvis"}, {"arrows": "to", "from": "weasel", "to": "requests"}, {"arrows": "to", "from": "weasel", "to": "rich"}, {"arrows": "to", "from": "weasel", "to": "shellingham"}, {"arrows": "to", "from": "weasel", "to": "typer"}, {"arrows": "to", "from": "weasel", "to": "weasyprint"}, {"arrows": "to", "from": "weasyprint", "to": "cffi"}, {"arrows": "to", "from": "weasyprint", "to": "cssselect2"}, {"arrows": "to", "from": "weasyprint", "to": "fonttools"}, {"arrows": "to", "from": "weasyprint", "to": "pillow"}, {"arrows": "to", "from": "weasyprint", "to": "pydyf"}, {"arrows": "to", "from": "weasyprint", "to": "pyphen"}, {"arrows": "to", "from": "weasyprint", "to": "tinycss2"}, {"arrows": "to", "from": "weasyprint", "to": "tinyhtml5"}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {"layout": {"hierarchical": {"enabled": true, "sortMethod": "directed", "direction": "LR", "nodeSpacing": 200, "treeSpacing": 300}}, "physics": {"enabled": false}, "edges": {"arrows": {"to": {"enabled": true, "scaleFactor": 0.7}}, "smooth": {"enabled": true, "type": "cubicBezier", "roundness": 0.6}, "color": {"color": "#aaaaaa"}}, "nodes": {"shape": "dot", "size": 18, "font": {"size": 18}}, "interaction": {"hover": true, "tooltipDelay": 100}};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>
