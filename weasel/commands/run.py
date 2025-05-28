@@ -3,7 +3,7 @@ import typer
 from pathlib import Path
 from typing import List
 import yaml
-from weasel.parser.requirements import parse_requirements, resolve_all_dependencies
+from weasel.parser.requirements import parse_requirements, resolve_all_dependencies, get_package_author, compute_full_origins
 from weasel.scanner.cve_scanner import get_cve_for_package, format_cve
 from weasel.scanner.license_checker import get_licenses, simplify_license_info
 from weasel.code_analysis.code_checker import run_bandit_scan
@@ -42,6 +42,15 @@ def run_scan(
         typer.echo(f"  - {pkg['name']} {pkg['specifier']}")
 
     resolved_packages = resolve_all_dependencies(requirements)
+    # récupère tous les chemins de dépendance
+    origins_map = compute_full_origins(requirements)
+    
+    print(origins_map)
+    for pkg in resolved_packages:
+        name = pkg["name"]
+        pkg["author"] = get_package_author(name)
+        pkg["origin"] = origins_map.get(name, "direct")
+    
     all_vulns = {}
     license_infos = []
     bandit_results = []
@@ -92,5 +101,8 @@ def run_scan(
     if any([cve, licenses, code_check]):
         typer.echo("Génération du rapport...")
         report_data = build_report_data(resolved_packages, all_vulns, license_infos, bandit_results)
+        print("--------------------------------------------------------------------------------------------")
+        print(resolved_packages[:3])
+        print("--------------------------------------------------------------------------------------------")
         generate_reports(report_data, output, formats=report_format)
         typer.echo(f"Rapport disponible dans : {output}")

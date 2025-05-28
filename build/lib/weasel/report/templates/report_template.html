@@ -38,10 +38,10 @@
   <details>
     <input type="search" id="depSearch" onkeyup="searchInTable('depTable', 'depSearch')" placeholder="Rechercher...">
     <table id="depTable">
-      <thead><tr><th>Nom</th><th>Version</th></tr></thead>
+      <thead><tr><th>Nom</th><th>Version</th><th>Auteur</th> <th>Origine</th></tr></thead>
       <tbody>
         {% for pkg in report.dependencies %}
-        <tr><td>{{ pkg.name }}</td><td>{{ pkg.version }}</td></tr>
+        <tr><td>{{ pkg.name }}</td><td>{{ pkg.version }}</td><td>{{ pkg.author or '–' }}</td><td>{{ pkg.origin or '–' }}</td></tr>
         {% endfor %}
       </tbody>
     </table>

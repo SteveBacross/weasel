@@ -3,9 +3,12 @@
 **Weasel** est un outil CLI complet permettant d'analyser un projet Python à partir de son fichier `requirements.txt`.
 
 Il identifie :
+- Les dependances intransitives 
 - Les vulnérabilités connues (CVE)
 - Les types de licences (et leur permissivité)
 - Les mauvaises pratiques dans le code (type Bandit)
+
+et affiche les résultats sous forme de : 
 - Les dépendances sous forme de graphe interactif
 - Des rapports exploitables : HTML interactif, PDF, JSON
 
@@ -20,7 +23,7 @@ Aller sur la branche master
 # Installation du package
 pip install .
 ```
-
+Installer gtk https://www.gtk.org/ et suivre les instructions
 ---
 
 ## 🧪 Utilisation
@@ -66,7 +69,6 @@ pytest tests/
 ---
 
 ## 🛠️ À venir
-- Mode CI/CD
 - Intégration dans GitHub Actions avec fichier de configuration
 - Analyse multi-fichiers `requirements.txt`
 
